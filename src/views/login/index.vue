@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">聚餐无忧系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -31,7 +31,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="Password"
+            placeholder="密码"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -45,52 +45,43 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
+        <!-- <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           Or connect with
-        </el-button>
+        </el-button> -->
       </div>
     </el-form>
 
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
+    <!-- <el-dialog title="Or connect with" :visible.sync="showDialog">
       Can not be simulated on local, so please combine you own business simulation! ! !
       <br>
       <br>
       <br>
       <social-sign />
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
-import SocialSign from './components/SocialSignin'
+// import SocialSign from './components/SocialSignin'
 
 export default {
   name: 'Login',
-  components: { SocialSign },
+  // components: { SocialSign },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能少于6位'))
       } else {
         callback()
       }
@@ -124,9 +115,9 @@ export default {
       immediate: true
     }
   },
-  created() {
-    // window.addEventListener('storage', this.afterQRScan)
-  },
+  // created() {
+  //   window.addEventListener('storage', this.afterQRScan)
+  // },
   mounted() {
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
@@ -134,9 +125,9 @@ export default {
       this.$refs.password.focus()
     }
   },
-  destroyed() {
-    // window.removeEventListener('storage', this.afterQRScan)
-  },
+  // destroyed() {
+  //   // window.removeEventListener('storage', this.afterQRScan)
+  // },
   methods: {
     checkCapslock(e) {
       const { key } = e
@@ -205,8 +196,8 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
+$light_gray:#E9E9EB;
+$cursor: #E9E9EB;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -248,9 +239,12 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+// 背景颜色
+$bg:#283D5A;
+// 图标和边框
+$dark_gray:#C1B9AE;
+// 字体颜色
+$light_gray:#E9E9EB;
 
 .login-container {
   min-height: 100%;
