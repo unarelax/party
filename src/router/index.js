@@ -54,7 +54,33 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
-
+  // 聚餐
+  {
+    path: '/party',
+    component: Layout,
+    redirect: '/party/create',
+    meta: { title: '聚餐管理', icon: 'list' },
+    children: [
+      {
+        path: '/party/create',
+        component: () => import('@/views/party/create'),
+        name: 'partyCreate',
+        meta: { title: '新建聚餐', icon: 'edit' }
+      }, {
+        path: '/party/list',
+        component: () => import('@/views/party/create'),
+        name: 'partyList',
+        meta: { title: '历史聚餐', icon: 'spoon' }
+      }, {
+        path: '/party/edit',
+        component: () => import('@/views/party/edit'),
+        hidden: true,
+        name: 'partyEdit',
+        meta: { title: '编辑聚餐', icon: 'edit', activeMenu: '/party/list' }
+      }
+    ]
+  },
+  // 主题
   {
     path: '/theme',
     component: Layout,
@@ -64,19 +90,6 @@ export const asyncRoutes = [
         component: () => import('@/views/theme/index'),
         name: 'Theme',
         meta: { title: 'Theme', icon: 'theme' }
-      }
-    ]
-  },
-  {
-    path: '/party',
-    component: Layout,
-    redirect: '/party/creat',
-    children: [
-      {
-        path: '/party/creat',
-        component: () => import('@/views/party/creat'),
-        name: '新建聚餐',
-        meta: { title: '新建聚餐', icon: 'spoon' }
       }
     ]
   },
