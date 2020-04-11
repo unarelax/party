@@ -68,9 +68,9 @@ export const asyncRoutes = [
         meta: { title: '新建聚餐', icon: 'edit' }
       }, {
         path: '/party/list',
-        component: () => import('@/views/party/create'),
+        component: () => import('@/views/party/list'),
         name: 'partyList',
-        meta: { title: '历史聚餐', icon: 'spoon' }
+        meta: { title: '聚餐列表', icon: 'spoon' }
       }, {
         path: '/party/edit',
         component: () => import('@/views/party/edit'),

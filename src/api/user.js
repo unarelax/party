@@ -24,6 +24,13 @@ export function submit(data) {
   })
 }
 
+export function getParty() {
+  return request({
+    url: '/party/list',
+    method: 'get'
+  })
+}
+
 export function logout() {
   return request({
     url: '/user/logout',
