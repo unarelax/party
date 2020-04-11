@@ -16,6 +16,14 @@ export function getInfo(token) {
   })
 }
 
+export function submit(data) {
+  return request({
+    url: '/party/create',
+    method: 'post',
+    data
+  })
+}
+
 export function logout() {
   return request({
     url: '/user/logout',
