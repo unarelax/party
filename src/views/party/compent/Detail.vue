@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-form ref="postForm" :model="postForm">
+    <el-form>
       <sticky :class-name="'sub-navbar'">
-        <el-button v-if="!isEdit" size="mini" type="primary" @click="showGuide">显示帮助</el-button>
+        <el-button size="mini" type="primary" @click="showGuide">显示帮助</el-button>
         <el-button
-          v-loading="loading"
+          :loading="loading"
           size="mini"
           type="success"
           style="margin-left: 10px"
           @click="submitParty"
-        >{{ isEdit ? '编辑聚餐' :'新建聚餐' }}</el-button>
+        >{{ isEdit ? '聚餐列表' :'新建聚餐' }}</el-button>
       </sticky>
     </el-form>
   </div>
@@ -41,7 +41,7 @@ export default {
       this.loading = true
       setTimeout(() => {
         this.loading = false
-      }, 1000)
+      }, 50)
     }
   }
 }

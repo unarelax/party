@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-alert
+    <!-- <el-alert
       v-if="submitResult"
       title="新建聚餐成功"
       type="success"
       :closable="false"
       center
       show-icon
-    />
+    /> -->
     <el-form ref="partyForm" :model="partyForm" :rules="rules" label-width="80px" style="margin:50px;">
       <el-form-item label="聚餐名称" prop="name">
         <el-input v-model="partyForm.name" placeholder="为这次聚餐取个名字" prefix-icon="el-icon-date" />
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { submit } from '@/api/user'
+import { submit } from '@/api/party'
 export default {
   data() {
     return {
@@ -88,23 +88,30 @@ export default {
         ]
       },
       inputVisible: false,
-      submitResult: false,
+      // submitResult: false,
       loading: false
     }
   },
   methods: {
+    open1() {
+      this.$notify({
+        title: '新建聚餐成功',
+        message: '已发消息通知您的同伴',
+        type: 'success'
+      })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
           const data = this.partyForm
-          console.log(data)
           submit(data).then(() => {
             this.loading = false
-            this.submitResult = true
-            setTimeout(() => {
-              this.submitResult = false
-            }, 5000)
+            // this.submitResult = true
+            this.open1()
+            // setTimeout(() => {
+            //   this.submitResult = false
+            // }, 5000)
           }).catch(() => {
             this.loading = false
           })

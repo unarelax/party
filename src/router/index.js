@@ -80,6 +80,32 @@ export const asyncRoutes = [
       }
     ]
   },
+  // 伙伴
+  // {
+  //   path: '/partner',
+  //   component: Layout,
+  //   redirect: '/partner/add',
+  //   meta: { title: '聚餐好友', icon: 'list' },
+  //   children: [
+  //     {
+  //       path: '/party/create',
+  //       component: () => import('@/views/party/create'),
+  //       name: 'partyCreate',
+  //       meta: { title: '新建聚餐', icon: 'edit' }
+  //     }, {
+  //       path: '/party/list',
+  //       component: () => import('@/views/party/list'),
+  //       name: 'partyList',
+  //       meta: { title: '聚餐列表', icon: 'spoon' }
+  //     }, {
+  //       path: '/party/edit',
+  //       component: () => import('@/views/party/edit'),
+  //       hidden: true,
+  //       name: 'partyEdit',
+  //       meta: { title: '编辑聚餐', icon: 'edit', activeMenu: '/party/list' }
+  //     }
+  //   ]
+  // },
   // 主题
   {
     path: '/theme',
