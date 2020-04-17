@@ -59,18 +59,18 @@ export const asyncRoutes = [
     path: '/party',
     component: Layout,
     redirect: '/party/create',
-    meta: { title: '聚餐管理', icon: 'list' },
+    meta: { title: '聚餐管理', icon: 'party' },
     children: [
       {
         path: '/party/create',
         component: () => import('@/views/party/create'),
         name: 'partyCreate',
-        meta: { title: '新建聚餐', icon: 'edit' }
+        meta: { title: '新建聚餐', icon: 'partyAdd' }
       }, {
         path: '/party/list',
         component: () => import('@/views/party/list'),
         name: 'partyList',
-        meta: { title: '聚餐列表', icon: 'spoon' }
+        meta: { title: '聚餐列表', icon: 'list' }
       }, {
         path: '/party/edit',
         component: () => import('@/views/party/edit'),
@@ -81,31 +81,25 @@ export const asyncRoutes = [
     ]
   },
   // 伙伴
-  // {
-  //   path: '/partner',
-  //   component: Layout,
-  //   redirect: '/partner/add',
-  //   meta: { title: '聚餐好友', icon: 'list' },
-  //   children: [
-  //     {
-  //       path: '/party/create',
-  //       component: () => import('@/views/party/create'),
-  //       name: 'partyCreate',
-  //       meta: { title: '新建聚餐', icon: 'edit' }
-  //     }, {
-  //       path: '/party/list',
-  //       component: () => import('@/views/party/list'),
-  //       name: 'partyList',
-  //       meta: { title: '聚餐列表', icon: 'spoon' }
-  //     }, {
-  //       path: '/party/edit',
-  //       component: () => import('@/views/party/edit'),
-  //       hidden: true,
-  //       name: 'partyEdit',
-  //       meta: { title: '编辑聚餐', icon: 'edit', activeMenu: '/party/list' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/partner',
+    component: Layout,
+    redirect: '/partner/add',
+    meta: { title: '聚餐好友', icon: '2people' },
+    children: [
+      {
+        path: '/partner/add',
+        component: () => import('@/views/partner/add'),
+        name: 'partnerAdd',
+        meta: { title: '添加好友', icon: 'peopleAdd' }
+      }, {
+        path: '/partner/list',
+        component: () => import('@/views/partner/list'),
+        name: 'partnerList',
+        meta: { title: '好友列表', icon: 'peoplelist' }
+      }
+    ]
+  },
   // 主题
   {
     path: '/theme',

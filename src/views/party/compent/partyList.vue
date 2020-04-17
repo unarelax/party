@@ -45,7 +45,6 @@
 
 <script>
 import { getParty, remove } from '@/api/party'
-// import {  } from '@/api/party'
 export default {
   data() {
     return {
