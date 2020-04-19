@@ -12,29 +12,21 @@
             <el-tooltip class="item" effect="dark" content="注意！删除后不可恢复" placement="top">
               <el-button :loading="loading" type="info" style="font-size: 8px" icon="el-icon-delete" class="button" circle @click="deleteParty(item._id)" />
             </el-tooltip>
-            <!-- <el-dialog
-              :visible.sync="dialogVisible"
-              width="30%"
-            >
-              <span>确定删除聚餐信息？</span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="deleteParty(i, list.length)">确 定</el-button>
-              </span>
-            </el-dialog> -->
           </div>
+
           <div class="text item">
-            <div class="itemTitle">
-              <p style=" line-height:1.7">
-                <i class="cardBody el-icon-user" />{{ item.name }}发起的<i class="cardBody el-icon-goblet-square-full" />{{ item.type }}会在
-                <i class="cardBody el-icon-time" />{{ item.time }}开始， 他邀请了<i class="cardBody el-icon-message" />
-                <span v-for="(index, j) of item.select" :key="j">{{ ' '+index }}</span>
-                （<i class="cardBody el-icon-chat-dot-round" />{{ item.desc }}）
-              </p>
-            </div>
-            <div class="itemBottom">
-              <div class="tagTitle">食物选择：</div>
-              <span v-for="(index, j) of item.select" :key="j" class="tagBody">{{ index }}</span>
+            <div class="title">
+              <div class="itemTitle">
+                <p style=" line-height:1.7; max-width:330px">
+                  <i class="cardBody el-icon-user" />{{ item.name }}发起的<i class="cardBody el-icon-goblet-square-full" />{{ item.type }}会在
+                  <i class="cardBody el-icon-time" />{{ item.time }}开始， 他邀请了<i class="cardBody el-icon-message" />
+                  <span v-for="(index, j) of item.select" :key="j">{{ ' '+index }}</span>（<i class="cardBody el-icon-chat-dot-round" />{{ item.desc }}）
+                </p>
+              </div>
+              <div class="itemBottom">
+                <div class="tagTitle">食物选择：</div>
+                <span v-for="(index, j) of item.select" :key="j" class="tagBody">{{ index }}</span>
+              </div>
             </div>
           </div>
         </el-card>
@@ -74,6 +66,7 @@ export default {
       console.log(index)
       this.loading = true
       remove(index).then(() => {
+        this.loading = false
         this.getPartyList()
         this.open1()
       }).catch(() => {
@@ -94,6 +87,7 @@ export default {
           const partydata = res.data[0].partydata
           // console.log(partydata)
           this.list = partydata.reverse()
+          console.log(this.list)
         }
       })
     },
@@ -112,6 +106,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
+  html{
+      /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+      -ms-overflow-style:none;
+      /*火狐下隐藏滚动条*/
+      overflow:-moz-scrollbars-none;
+  }
+  //谷歌适用
+  ::-webkit-scrollbar{
+      display:none;
+  }
   .allBackground {
     background-color: $main;
   }
@@ -141,12 +145,23 @@ export default {
   .text {
     font-size: 14px;
   }
+  .title{
+    max-width: 310px;
+    overflow-y: scroll;
+    height: 230px;
+    width: 100%;
+    overflow-x: hidden;
+  }
 
   .item {
     margin-bottom: 18px;
+    // display: flex;
+    // overflow-y: scroll;
+    // height: 250px;
   }
 
   .itemTitle {
+    // flex-shrink: 0;
     margin-bottom: 20px;
   }
 

@@ -1,5 +1,12 @@
 <template>
   <div class="friend">
+    <el-alert
+      v-if="showable"
+      title="请输入聚餐消息"
+      type="info"
+      show-icon
+      close-text="知道了"
+    />
     <div class="friendHeader">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
         <el-form-item label="列表名称" prop="name">
@@ -18,19 +25,22 @@
         </el-form-item>
 
         <el-form-item label="已添加好友" prop="userList">
-          <el-avatar v-for="(item,i) of ruleForm.userList" :key="i" style="margin-right:10px" :size="50"> {{ item }} </el-avatar>
+          <div v-for="(item,i) of ruleForm.avatarList" :key="i" style="margin-right:10px" class="deavatar">
+            <el-avatar :size="50" :src="item" @error="errorHandler" />
+            <i class="el-icon-remove del" @click="delAva(i)" />
+          </div>
         </el-form-item>
 
         <el-form-item label="卡片颜色" prop="color">
-          <el-radio-group v-model="ruleForm.color">
-            <el-radio v-for="(item,index) of colorsList" :key="index" :label="index" @change="changeColor(index)">{{ item }}</el-radio>
+          <el-radio-group v-model="ruleForm.color[0]" :value="radio">
+            <el-radio v-for="(item,index) of colorsList" :key="index" :label="item" @change="changeColor(index)">{{ item }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item>
           <el-col :span="8">
             <el-card shadow="always" :style="{'background-image': ruleForm.color , 'color':fontcolor}">
-              <p>{{ ruleForm.name }}</p>
+              <p style="font-size: 18px">{{ ruleForm.name }}</p>
             </el-card>
           </el-col>
         </el-form-item>
@@ -55,16 +65,20 @@ const colorsCss = ['linear-gradient(25deg, #060d20, #392930, #694540, #9c6451)',
 export default {
   data() {
     return {
+      showable: false,
+      radio: '百香果',
       loading: false,
       friend: '',
       color: 'white',
       fontcolor: 'black',
       colorsList: colorsList,
       allUser: [],
+      avatars: [],
       ruleForm: {
         name: '',
         color: '',
-        userList: []
+        userList: [],
+        avatarList: []
       },
       rules: {
         name: [
@@ -81,6 +95,14 @@ export default {
     }
   },
   methods: {
+    delAva(i) {
+      this.ruleForm.userList.splice(i, 1)
+      this.ruleForm.avatarList.splice(i, 1)
+      console.log(this.ruleForm.userList, this.ruleForm.avatarList)
+    },
+    errorHandler() {
+      return true
+    },
     open1() {
       this.$notify({
         title: '成功',
@@ -106,12 +128,17 @@ export default {
       // console.log(friend)
       // console.log(this.allUser)
       const allUser = this.allUser
+      const avatars = this.avatars
       const userList = this.ruleForm.userList
-      if (allUser.includes(friend)) {
+      const avatarList = this.ruleForm.avatarList
+      const data = allUser.indexOf(friend)
+      if (data !== -1) {
         if (userList.includes(friend)) {
           this.open3()
         } else {
           userList.push(friend)
+          avatarList.push(avatars[data])
+          this.friend = ''
         }
       } else {
         this.open2()
@@ -125,7 +152,10 @@ export default {
           const data = res.data
           for (var i = 0; i < data.length; i++) {
             const user = data[i].username
+            const avatar = data[i].avatar
             const allUser = this.allUser
+            const avatars = this.avatars
+            avatars.push(avatar)
             allUser.push(user)
           }
         }
@@ -134,7 +164,6 @@ export default {
     changeColor(index) {
       this.ruleForm.color = colorsCss[index]
       this.fontcolor = 'white'
-      console.log(this.ruleForm.color)
     },
     submitForm(ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -144,17 +173,21 @@ export default {
           submitUser(data).then(() => {
             this.loading = false
             this.open1()
+            this.resetForm(ruleForm)
           }).catch(() => {
             this.loading = false
           })
         } else {
-          alert('请输入列表信息')
+          this.showable = true
           return false
         }
       })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.ruleForm.userList = []
+      this.ruleForm.avatarList = []
+      this.friend = ''
     }
   }
 }
@@ -165,5 +198,15 @@ export default {
     margin-top: 50px;
     position: relative;
     left: 8%;
+}
+.deavatar{
+  display: inline-block;
+  position: relative;
+}
+.del{
+  color: #f56c6c;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 </style>

@@ -1,13 +1,12 @@
 <template>
   <div>
-    <!-- <el-alert
-      v-if="submitResult"
-      title="新建聚餐成功"
-      type="success"
-      :closable="false"
-      center
+    <el-alert
+      v-if="showable"
+      title="请输入聚餐消息"
+      type="info"
       show-icon
-    /> -->
+      close-text="知道了"
+    />
     <el-form ref="partyForm" :model="partyForm" :rules="rules" label-width="80px" style="margin:50px;">
       <el-form-item label="聚餐名称" prop="name">
         <el-input v-model="partyForm.name" placeholder="为这次聚餐取个名字" prefix-icon="el-icon-date" />
@@ -88,6 +87,7 @@ export default {
         ]
       },
       inputVisible: false,
+      showable: false,
       // submitResult: false,
       loading: false
     }
@@ -109,14 +109,12 @@ export default {
             this.loading = false
             // this.submitResult = true
             this.open1()
-            // setTimeout(() => {
-            //   this.submitResult = false
-            // }, 5000)
+            this.resetForm(formName)
           }).catch(() => {
             this.loading = false
           })
         } else {
-          alert('请输入聚餐信息')
+          this.showable = true
           return false
         }
       })

@@ -1,13 +1,24 @@
 <template>
   <div class="list">
     <div>
-      <el-row :gutter="12">
+      <el-row>
         <el-col v-for="(item, i) of partner" :key="i" :span="8">
           <el-card class="box-card" :style="{'background-image': item.color , 'color':fontcolor}">
-            <p style="font-size: 18px">{{ item.name }}</p>
+            <p style="font-size: 20px">{{ item.name }}</p>
+            <!-- <div>
+              <span class="demonstration">默认 Hover 指示器触发</span>
+              <el-carousel height="150px">
+                <el-carousel-item>
+                  <div v-for="(index, j) of item.userList" :key="j" class="avatar">
+                    <el-avatar class="title" :src="item.avatarList[j]" @error="errorHandler" />
+                    <span style="line-height:1.5">{{ index }}</span>
+                  </div>
+                </el-carousel-item>
+              </el-carousel>
+            </div> -->
             <div class="block">
               <div v-for="(index, j) of item.userList" :key="j" class="avatar">
-                <el-avatar class="title" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                <el-avatar class="title" :src="item.avatarList[j]" @error="errorHandler" />
                 <span style="line-height:1.5">{{ index }}</span>
               </div>
             </div>
@@ -36,6 +47,9 @@ export default {
     this.getUerList()
   },
   methods: {
+    errorHandler() {
+      return true
+    },
     open(item) {
       const index = [item]
       this.$confirm('是否继续删除改好友列表?', '提示', {
@@ -78,7 +92,25 @@ export default {
     padding-top: 30px;
     background-color: #eff0f3;
   }
+  .block{
+     display: flex;
+    overflow-x: auto;
+    // overflow-y: hidden;
+    // overflow-x: scroll;
+    // -webkit-overflow-scrolling: touch;
+  }
+  html{
+      /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+      -ms-overflow-style:none;
+      /*火狐下隐藏滚动条*/
+      overflow:-moz-scrollbars-none;
+  }
+  //谷歌适用
+  ::-webkit-scrollbar{
+      display:none;
+  }
   .avatar {
+    flex-shrink: 0;
     display: inline-block;
     padding-top: 8px;
     padding-right: 20px;
