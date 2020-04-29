@@ -54,6 +54,20 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
+  // 消息通知
+  {
+    path: '/message',
+    component: Layout,
+    // redirect: '/dashboard',
+    children: [
+      {
+        path: '/message',
+        component: () => import('@/views/message/index'),
+        name: '/message',
+        meta: { title: '聚餐消息', icon: 'message', affix: true }
+      }
+    ]
+  },
   // 聚餐
   {
     path: '/party',

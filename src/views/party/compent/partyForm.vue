@@ -18,6 +18,32 @@
           </el-form-item>
         </div>
       </el-form-item>
+
+      <el-form-item label="聚餐好友" prop="friend">
+        <div class="block">
+          <el-cascader
+            v-model="anfriend"
+            placeholder="可直接搜索用户名"
+            :options="optionsList"
+            :props="{ multiple: true, expandTrigger: 'hover' }"
+            filterable
+            clearable
+          />
+        </div>
+      </el-form-item>
+
+      <el-form-item label="意见征询" prop="value">
+        <el-tooltip :content="partyForm.value">
+          <el-switch
+            v-model="partyForm.value"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="进行意见征询"
+            inactive-value="直接通知"
+          />
+        </el-tooltip>
+      </el-form-item>
+
       <el-form-item label="聚餐类型" prop="resource">
         <el-radio-group v-model="partyForm.resource">
           <el-radio label="员工聚餐" />
@@ -59,7 +85,7 @@
 </template>
 
 <script>
-import { submit } from '@/api/party'
+import { submit, pgetList } from '@/api/party'
 export default {
   data() {
     return {
@@ -69,7 +95,9 @@ export default {
         desc: '',
         resource: '',
         dynamicTags: [],
-        inputValue: ''
+        inputValue: '',
+        friend: [],
+        value: ''
       },
       rules: {
         name: [
@@ -78,6 +106,9 @@ export default {
         ],
         date1: [
           { type: 'date', required: true, message: '请选择聚餐时间', trigger: 'change' }
+        ],
+        friend: [
+          { required: true, message: '请添加本次聚餐好友', trigger: 'blur' }
         ],
         resource: [
           { required: true, message: '请选择聚餐类型', trigger: 'change' }
@@ -88,9 +119,13 @@ export default {
       },
       inputVisible: false,
       showable: false,
-      // submitResult: false,
-      loading: false
+      loading: false,
+      anfriend: [],
+      optionsList: []
     }
+  },
+  created() {
+    this.getUerList()
   },
   methods: {
     open1() {
@@ -100,7 +135,41 @@ export default {
         type: 'success'
       })
     },
+    getUerList() {
+      pgetList().then((res, error) => {
+        if (error) {
+          console.log(error)
+        } else {
+          const userdata = res.data[0].friendList
+          for (var i = 0; i < userdata.length; i++) {
+            var options = { children: [] }
+            options.label = userdata[i].name
+            options.value = userdata[i].name
+            this.optionsList.push(options)
+            const list = userdata[i].nickList
+            const user = userdata[i].userList
+            for (var j = 0; j < list.length; j++) {
+              var cList = {}
+              cList.label = list[j]
+              cList.value = user[j]
+              options.children.push(cList)
+            }
+          }
+        }
+      })
+    },
+    dealdata() {
+      const flist = this.partyForm.friend
+      const friend = this.anfriend
+      for (var i = 0; i < friend.length; i++) {
+        const data = this.partyForm.friend.indexOf(friend[i][1])
+        if (data === -1) {
+          flist.push(friend[i][1])
+        }
+      }
+    },
     submitForm(formName) {
+      this.dealdata()
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
@@ -121,6 +190,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.anfriend = []
     },
     handleClose(tag) {
       this.partyForm.dynamicTags.splice(this.partyForm.dynamicTags.indexOf(tag), 1)

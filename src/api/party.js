@@ -8,6 +8,13 @@ export function submit(data) {
   })
 }
 
+export function pgetList() {
+  return request({
+    url: '/party/create',
+    method: 'get'
+  })
+}
+
 export function remove(data) {
   return request({
     url: '/party/list',

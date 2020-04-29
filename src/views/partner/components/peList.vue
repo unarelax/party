@@ -19,11 +19,13 @@
             <div class="block">
               <div v-for="(index, j) of item.userList" :key="j" class="avatar">
                 <el-avatar class="title" :src="item.avatarList[j]" @error="errorHandler" />
-                <span style="line-height:1.5">{{ index }}</span>
+                <el-tooltip :content="index" effect="light">
+                  <span style="line-height:2">{{ item.nickList[j] }}</span>
+                </el-tooltip>
               </div>
             </div>
             <div class="buttom">
-              <i class="el-icon-edit" style="padding-right:10px" />
+              <!-- <i class="el-icon-edit" style="padding-right:10px" /> -->
               <i class="el-icon-delete" style="margin-right:-10px" @click="open(item._id)" />
             </div>
           </el-card>
@@ -52,7 +54,7 @@ export default {
     },
     open(item) {
       const index = [item]
-      this.$confirm('是否继续删除改好友列表?', '提示', {
+      this.$confirm('是否继续删除该好友列表?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

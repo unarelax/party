@@ -8,7 +8,7 @@
       <el-col v-for="(item, i) of list" :key="i" ref="i" :span="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="color:#0d0d0d; font-weight: 700; font-size: 18px; line-height:35px">{{ (i+1) +' '+ item.name }}</span>
+            <span style="color:#0d0d0d; font-weight: 700; font-size: 18px; line-height:35px">{{ (i+1) +'. '+ item.name }}</span>
             <el-tooltip class="item" effect="dark" content="注意！删除后不可恢复" placement="top">
               <el-button :loading="loading" type="info" style="font-size: 8px" icon="el-icon-delete" class="button" circle @click="deleteParty(item._id)" />
             </el-tooltip>
@@ -18,9 +18,9 @@
             <div class="title">
               <div class="itemTitle">
                 <p style=" line-height:1.7; max-width:330px">
-                  <i class="cardBody el-icon-user" />{{ item.name }}发起的<i class="cardBody el-icon-goblet-square-full" />{{ item.type }}会在
+                  <i class="cardBody el-icon-user" />{{ item.leader }}发起的<i class="cardBody el-icon-goblet-square-full" />{{ item.type }}会在
                   <i class="cardBody el-icon-time" />{{ item.time }}开始， 他邀请了<i class="cardBody el-icon-message" />
-                  <span v-for="(index, j) of item.select" :key="j">{{ ' '+index }}</span>（<i class="cardBody el-icon-chat-dot-round" />{{ item.desc }}）
+                  <span v-for="(index, j) of item.memberList" :key="j">{{ ' '+index }}</span>（<i class="cardBody el-icon-chat-dot-round" />{{ item.desc }}）
                 </p>
               </div>
               <div class="itemBottom">
@@ -42,7 +42,9 @@ export default {
     return {
       list: Array,
       date: '',
-      loading: false
+      loading: false,
+      list1: [],
+      list2: []
     }
   },
   // computed: {
@@ -78,16 +80,37 @@ export default {
       d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
       return d.toISOString()
     },
+    findElem(leader, list) {
+      const list1 = this.list1
+      const list2 = this.list2
+      const list3 = []
+      for (var i = 0; i < list.length; i++) {
+        const value = list1.indexOf(list[i])
+        if (value !== -1) {
+          list3.push(list2[i])
+        }
+      }
+      // const member = list.memberList
+      list.memberList = list3
+      // member.splice.call(member, 0, member.length, ...list3)
+    },
     getPartyList() {
       getParty().then((res, error) => {
         if (error) {
           console.log(error)
         } else {
         //   const data = res.data
-          const partydata = res.data[0].partydata
-          // console.log(partydata)
+          // console.log(res)
+          const partydata = res.data.data[0].partydata
+          const doc = res.data.doc
+          console.log(doc, partydata)
+          const list1 = this.list1
+          const list2 = this.list2
+          for (var i = 0; i < doc.length; i++) {
+            list1.push(doc[i].username)
+            list2.push(doc[i].nickname)
+          }
           this.list = partydata.reverse()
-          console.log(this.list)
         }
       })
     },

@@ -74,11 +74,13 @@ export default {
       colorsList: colorsList,
       allUser: [],
       avatars: [],
+      allNick: [],
       ruleForm: {
         name: '',
         color: '',
         userList: [],
-        avatarList: []
+        avatarList: [],
+        nickList: []
       },
       rules: {
         name: [
@@ -95,10 +97,11 @@ export default {
     }
   },
   methods: {
+    // 删除成员
     delAva(i) {
       this.ruleForm.userList.splice(i, 1)
       this.ruleForm.avatarList.splice(i, 1)
-      console.log(this.ruleForm.userList, this.ruleForm.avatarList)
+      // console.log(this.ruleForm.userList, this.ruleForm.nickList)
     },
     errorHandler() {
       return true
@@ -129,8 +132,10 @@ export default {
       // console.log(this.allUser)
       const allUser = this.allUser
       const avatars = this.avatars
+      const allNick = this.allNick
       const userList = this.ruleForm.userList
       const avatarList = this.ruleForm.avatarList
+      const nickList = this.ruleForm.nickList
       const data = allUser.indexOf(friend)
       if (data !== -1) {
         if (userList.includes(friend)) {
@@ -138,6 +143,7 @@ export default {
         } else {
           userList.push(friend)
           avatarList.push(avatars[data])
+          nickList.push(allNick[data])
           this.friend = ''
         }
       } else {
@@ -153,8 +159,11 @@ export default {
           for (var i = 0; i < data.length; i++) {
             const user = data[i].username
             const avatar = data[i].avatar
+            const nickname = data[i].nickname
             const allUser = this.allUser
             const avatars = this.avatars
+            const allNick = this.allNick
+            allNick.push(nickname)
             avatars.push(avatar)
             allUser.push(user)
           }
