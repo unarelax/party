@@ -1,5 +1,9 @@
 <template>
   <div class="list">
+    <div class="head">
+      <p class="headTitle"> 好友卡片（共 {{ partner.length }} 张）</p>
+      <p class="headBody">您可根据不同公司或不同小组创建卡片</p>
+    </div>
     <div>
       <el-row>
         <el-col v-for="(item, i) of partner" :key="i" :span="8">
@@ -90,10 +94,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list {
-    padding-top: 30px;
-    background-color: #eff0f3;
+@import '@/styles/variables.scss';
+  .head {
+    margin-left: 25px;
+    max-width: 600px;
+    margin-bottom: 10px;
   }
+  .headTitle {
+    margin: 0;
+    padding: 30px 0 10px 0;
+    color: $fontTitle;
+    font-size: 25px;
+    font-weight: 700;
+  }
+  .headBody {
+    margin: 0;
+    margin-bottom: 10px;
+    color:$fontTitle;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 400;
+  }
+  // .list {
+  //   background-color: #eff0f3;
+  // }
   .block{
      display: flex;
     overflow-x: auto;

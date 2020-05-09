@@ -15,3 +15,11 @@ export function transactionList(query) {
     params: query
   })
 }
+
+export function pfData(query) {
+  return request({
+    url: '/free/pfdata',
+    method: 'get',
+    params: query
+  })
+}

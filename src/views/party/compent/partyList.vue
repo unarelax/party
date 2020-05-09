@@ -1,8 +1,9 @@
 <template>
   <div class="allBackground">
     <div class="head">
-      <p class="headTitle"> 聚餐列表 </p>
+      <p class="headTitle"> 聚餐列表 (共 {{ list.length }} 条）</p>
       <p class="headBody"> 您所创建和所参加的聚餐都会在这里显示 </p>
+      <!-- <el-button type="success" circle>111</el-button> -->
     </div>
     <el-row>
       <el-col v-for="(item, i) of list" :key="i" ref="i" :span="8">
@@ -38,6 +39,14 @@
 <script>
 import { getParty, remove } from '@/api/party'
 export default {
+  props: {
+    listLength: {
+      type: Object,
+      default: function() {
+        return this.list.length
+      }
+    }
+  },
   data() {
     return {
       list: Array,
@@ -47,12 +56,6 @@ export default {
       list2: []
     }
   },
-  // computed: {
-  //   titleData() {
-  //     const data = this.localDate(this.list[this.$refs.i].time)
-  //     return data
-  //   }
-  // },
   created() {
     this.getPartyList()
   },
@@ -129,6 +132,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
+  .headLabel{
+    margin-top: 15px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background: #ff4ef6;
+    border-radius: 4em;
+  }
   html{
       /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
       -ms-overflow-style:none;

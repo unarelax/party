@@ -3,46 +3,33 @@
     <el-card class="box-card">
       <div slot="header">
         <a class="link-type link-title" target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/theme.html">
-          Theme documentation
+          主题选择
         </a>
       </div>
       <div class="box-item">
-        <span class="field-label">Change Theme : </span>
+        <span class="field-label">变换主题：</span>
         <el-switch v-model="theme" />
         <aside style="margin-top:15px;">
-          Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.
+          两种换肤方案，应用场景如下：
         </aside>
       </div>
     </el-card>
 
     <div class="block">
       <el-button type="primary">
-        Primary
+        普通
       </el-button>
       <el-button type="success">
-        Success
+        成功
       </el-button>
       <el-button type="info">
-        Info
+        提示
       </el-button>
       <el-button type="warning">
-        Warning
+        警告
       </el-button>
       <el-button type="danger">
-        Danger
-      </el-button>
-    </div>
-
-    <div class="block">
-      <el-button type="primary" icon="el-icon-edit" />
-      <el-button type="primary" icon="el-icon-share" />
-      <el-button type="primary" icon="el-icon-delete" />
-      <el-button type="primary" icon="el-icon-search">
-        Search
-      </el-button>
-      <el-button type="primary">
-        Upload
-        <i class="el-icon-upload el-icon-right" />
+        危险
       </el-button>
     </div>
 
@@ -64,10 +51,6 @@
           Option C
         </el-radio>
       </el-radio-group>
-    </div>
-
-    <div class="block">
-      <el-slider v-model="slideValue" />
     </div>
   </div>
 </template>
@@ -111,7 +94,8 @@ export default {
 }
 
 .block {
-  padding: 30px 24px;
+  text-align: center;
+  padding-top: 30px;
 }
 
 .tag-item {

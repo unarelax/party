@@ -46,8 +46,8 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        name: '首页',
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   }
@@ -55,19 +55,19 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   // 消息通知
-  {
-    path: '/message',
-    component: Layout,
-    // redirect: '/dashboard',
-    children: [
-      {
-        path: '/message',
-        component: () => import('@/views/message/index'),
-        name: '/message',
-        meta: { title: '聚餐消息', icon: 'message', affix: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/message',
+  //   component: Layout,
+  //   // redirect: '/dashboard',
+  //   children: [
+  //     {
+  //       path: '/message',
+  //       component: () => import('@/views/message/index'),
+  //       name: '/message',
+  //       meta: { title: '聚餐消息', icon: 'message', affix: true }
+  //     }
+  //   ]
+  // },
   // 聚餐
   {
     path: '/party',
@@ -122,8 +122,8 @@ export const asyncRoutes = [
       {
         path: 'index',
         component: () => import('@/views/theme/index'),
-        name: 'Theme',
-        meta: { title: 'Theme', icon: 'theme' }
+        name: '主题',
+        meta: { title: '主题', icon: 'theme' }
       }
     ]
   },
