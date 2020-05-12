@@ -28,6 +28,26 @@
                 <div class="tagTitle">食物选择：</div>
                 <span v-for="(index, j) of item.select" :key="j" class="tagBody">{{ index }}</span>
               </div>
+              <!-- <div class="itemMoney">
+                <span class="tagTitle">添加聚餐总金额：</span>
+                <el-button v-if="addMoney" type="info" icon="el-icon-plus" size="mini" plain @click="insertMoney(item._id)" />
+                <el-input v-if="!addMoney" v-model="input" size="mini" style="width:100px" />
+                <span style="padding-left:5px">元</span>
+              </div> -->
+              <div class="itemMoney">
+                <span class="tagTitle">添加聚餐总金额：</span>
+                <el-button v-if="addMoney" type="info" icon="el-icon-plus" size="mini" plain @click="insertMoney(item._id)" />
+                <el-input v-if="inputMoney" v-model="input" size="mini" style="width:100px" @keyup.enter.native="handleInputConfirm" />
+                <el-tag
+                  v-if="tagMoney"
+                  closable
+                  :disable-transitions="false"
+                  @close="handleClose()"
+                >
+                  {{ dynamicTags }}
+                </el-tag>
+                <span style="padding-left:5px">元</span>
+              </div>
             </div>
           </div>
         </el-card>
@@ -39,21 +59,26 @@
 <script>
 import { getParty, remove } from '@/api/party'
 export default {
-  props: {
-    listLength: {
-      type: Object,
-      default: function() {
-        return this.list.length
-      }
-    }
-  },
+  // props: {
+  //   listLength: {
+  //     type: Object,
+  //     default: function() {
+  //       return this.list.length
+  //     }
+  //   }
+  // },
   data() {
     return {
+      addMoney: true,
+      inputMoney: false,
+      tagMoney: false,
       list: Array,
       date: '',
       loading: false,
       list1: [],
-      list2: []
+      list2: [],
+      input: '',
+      dynamicTags: ''
     }
   },
   created() {
@@ -77,6 +102,21 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+    },
+    handleClose() {
+      this.dynamicTags = ''
+      this.addMoney = true
+      this.tagMoney = false
+    },
+    insertMoney(id) {
+      this.inputMoney = true
+      console.log(id)
+      this.addMoney = false
+    },
+    handleInputConfirm() {
+      this.dynamicTags = this.input
+      this.inputMoney = false
+      this.tagMoney = true
     },
     localDate(v) {
       const d = new Date(v)
@@ -202,9 +242,14 @@ export default {
   .itemBottom {
     margin-bottom: 0px;
   }
+
   .tagTitle {
     color: $fontTitle;
     font-weight: 700;
+  }
+
+  .itemMoney{
+    margin-top: 30px;
   }
 
   .tagBody {

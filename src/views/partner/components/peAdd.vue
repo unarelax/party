@@ -26,8 +26,11 @@
 
         <el-form-item label="已添加好友" prop="userList">
           <div v-for="(item,i) of ruleForm.avatarList" :key="i" style="margin-right:10px" class="deavatar">
-            <el-avatar :size="50" :src="item" @error="errorHandler" />
-            <i class="el-icon-remove del" @click="delAva(i)" />
+            <div class="avatarinline">
+              <el-avatar :size="50" :src="item" @error="errorHandler" />
+              <i class="el-icon-remove del" @click="delAva(i)" />
+            </div>
+            <span style="display:inline-block">{{ ruleForm.userList[i] }}</span>
           </div>
         </el-form-item>
 

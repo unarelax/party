@@ -17,11 +17,11 @@
           name="username"
           type="text"
           tabindex="1"
-          autocomplete="on"
+          autocomplete="off"
         />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="大写已开启" placement="right" manual>
+      <el-tooltip v-model="capsTooltip" content="大写已锁定" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
