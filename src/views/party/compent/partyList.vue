@@ -34,19 +34,23 @@
                 <el-input v-if="!addMoney" v-model="input" size="mini" style="width:100px" />
                 <span style="padding-left:5px">元</span>
               </div> -->
-              <div class="itemMoney">
-                <span class="tagTitle">添加聚餐总金额：</span>
-                <el-button v-if="addMoney" type="info" icon="el-icon-plus" size="mini" plain @click="insertMoney(item._id)" />
-                <el-input v-if="inputMoney" v-model="input" size="mini" style="width:100px" @keyup.enter.native="handleInputConfirm" />
+              <div v-if="allMoney[i]" class="itemMoney">
+                <span class="tagTitle">添加聚餐花费：</span>
+                <el-button v-if="addMoney[i]" type="info" icon="el-icon-plus" size="mini" plain @click="insertMoney(i)" />
+                <el-input v-if="inputMoney[i]" ref="saveTagInput" v-model="inputValue[i]" size="mini" style="width:100px" @keyup.enter.native="handleInputConfirm(i,item._id)" />
                 <el-tag
-                  v-if="tagMoney"
+                  v-if="tagMoney[i]"
                   closable
                   :disable-transitions="false"
-                  @close="handleClose()"
+                  @close="handleClose(i)"
                 >
-                  {{ dynamicTags }}
+                  {{ dynamicTags[i] }}
                 </el-tag>
                 <span style="padding-left:5px">元</span>
+              </div>
+              <div v-if="!allMoney[i]" class="itemMoney">
+                <span class="tagTitle">此次聚餐花费</span>
+                <span style="padding-left:5px">{{ item.money }} 元</span>
               </div>
             </div>
           </div>
@@ -69,26 +73,45 @@ export default {
   // },
   data() {
     return {
-      addMoney: true,
-      inputMoney: false,
-      tagMoney: false,
+      allMoney: [],
+      addMoney: [],
+      inputMoney: [],
+      tagMoney: [],
       list: Array,
       date: '',
       loading: false,
       list1: [],
       list2: [],
-      input: '',
-      dynamicTags: ''
+      inputValue: [],
+      dynamicTags: []
     }
   },
   created() {
     this.getPartyList()
   },
+  // beforeDestroy() {
+  //   this.postMoney()
+  // },
   methods: {
+    // postMoney() {
+    //   remove(this.dynamicTags)
+    // },
     open1() {
       this.$notify({
         title: '聚餐删除成功',
         type: 'success'
+      })
+    },
+    open2() {
+      this.$notify({
+        title: '请输入聚餐花费',
+        type: 'error'
+      })
+    },
+    open3() {
+      this.$notify({
+        title: '请输入数字',
+        type: 'error'
       })
     },
     deleteParty(item) {
@@ -103,20 +126,53 @@ export default {
         this.loading = false
       })
     },
-    handleClose() {
-      this.dynamicTags = ''
-      this.addMoney = true
-      this.tagMoney = false
+    handleClose(i) {
+      this.dynamicTags[i] = ''
+      this.inputValue[i] = ''
+      this.$set(this.tagMoney, i, false)
+      setTimeout(() => {
+        this.$set(this.addMoney, i, true)
+      }, 300)
+      // setInterval(this.$set(this.addMoney, i, true), 10000)
+      // this.$set(this.addMoney, i, true)
+      // this.addMoney[i] = true
+      // this.tagMoney[i] = false
     },
-    insertMoney(id) {
-      this.inputMoney = true
-      console.log(id)
-      this.addMoney = false
+    insertMoney(i) {
+      console.log(i)
+      this.$set(this.addMoney, i, false)
+      this.$set(this.inputMoney, i, true)
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+      // this.$refs.saveTagInput.$refs.input.focus()
+      // this.$nextTick(_ => {
+      //   this.$refs.input.focus()
+      // })
+
+      // this.addMoney[i] = false
+      // this.inputMoney[i] = true
     },
-    handleInputConfirm() {
-      this.dynamicTags = this.input
-      this.inputMoney = false
-      this.tagMoney = true
+    handleInputConfirm(i, id) {
+      var numReg = /^[0-9]+$/
+      var numRe = new RegExp(numReg)
+      if (this.inputValue[i]) {
+        if (!numRe.test(this.inputValue[i])) {
+          this.open3()
+        } else {
+          // const money = this.inputValue[i]
+          // const arr = [id, money]
+          // remove(arr).then(() => {
+          //   this.$set(this.inputMoney, i, false)
+          //   this.getPartyList()
+          // })
+          this.dynamicTags[i] = this.inputValue[i]
+          this.$set(this.inputMoney, i, false)
+          this.$set(this.tagMoney, i, true)
+        }
+      } else {
+        this.open2()
+      }
     },
     localDate(v) {
       const d = new Date(v)
@@ -154,6 +210,14 @@ export default {
             list2.push(doc[i].nickname)
           }
           this.list = partydata.reverse()
+          for (var j = 0; j < this.list.length; j++) {
+            if (partydata[j].money) {
+              this.$set(this.allMoney, j, false)
+            } else {
+              this.$set(this.allMoney, j, true)
+              this.$set(this.addMoney, j, true)
+            }
+          }
         }
       })
     },

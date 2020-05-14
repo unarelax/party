@@ -22,7 +22,7 @@
           <div class="card-panel-text">
             聚餐总花费
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="moneyAll" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -53,7 +53,8 @@ export default {
   data() {
     return {
       partylength: Number,
-      friendLength: Number
+      friendLength: Number,
+      moneyAll: Number
     }
   },
   created() {
@@ -67,6 +68,15 @@ export default {
       pfData().then(response => {
         console.log(response.data)
         this.partylength = response.data.data[0].partydata.length
+        const party = response.data.data[0].partydata
+        var a = []
+        for (var i = 0; i < party.length; i++) {
+          if (party[i].money) {
+            a.push(party[i].money)
+            console.log(party[i].money)
+          }
+        }
+        this.moneyAll = eval(a.join('+'))
         this.friendLength = response.data.doc[0].friendList.length
         // console.log( this.partylength, this.friendLength)
         // this.list = response.data
