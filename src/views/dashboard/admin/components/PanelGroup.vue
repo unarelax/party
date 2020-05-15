@@ -22,7 +22,7 @@
           <div class="card-panel-text">
             聚餐总花费
           </div>
-          <count-to :start-val="0" :end-val="moneyAll" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="moneyAll" :duration="2000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -64,20 +64,44 @@ export default {
     // handleSetLineChartData(type) {
     //   this.$emit('handleSetLineChartData', type)
     // }
+    evil(fn) {
+      const Fn = Function // 一个变量指向Function，防止有些前端编译工具报错
+      return new Fn('return ' + fn)()
+    },
     fetchData() {
       pfData().then(response => {
-        console.log(response.data)
-        this.partylength = response.data.data[0].partydata.length
+        // console.log(response.data)
+        const parLength = response.data.data[0].partydata.length
+        if (parLength === 0) {
+          this.partylength = 0
+        } else {
+          this.partylength = parLength
+        }
         const party = response.data.data[0].partydata
         var a = []
         for (var i = 0; i < party.length; i++) {
           if (party[i].money) {
             a.push(party[i].money)
-            console.log(party[i].money)
+            // console.log(party[i].money)
           }
         }
-        this.moneyAll = eval(a.join('+'))
-        this.friendLength = response.data.doc[0].friendList.length
+        if (a.length === 0) {
+          this.moneyAll = 0
+        } else {
+          this.moneyAll = this.evil(a.join('+'))
+        }
+        // var s = 0
+        // for (var i = party.length - 1; i >= 0; i--) {
+        //   s += party[i].money
+        //   console.log(s)
+        // }
+        // this.moneyAll = s
+        const friLength = response.data.doc[0].friendList.length
+        if (friLength === 0) {
+          this.friendLength = 0
+        } else {
+          this.friendLength = friLength
+        }
         // console.log( this.partylength, this.friendLength)
         // this.list = response.data
       })

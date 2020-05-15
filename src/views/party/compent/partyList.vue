@@ -80,8 +80,6 @@ export default {
       list: Array,
       date: '',
       loading: false,
-      list1: [],
-      list2: [],
       inputValue: [],
       dynamicTags: []
     }
@@ -160,15 +158,15 @@ export default {
         if (!numRe.test(this.inputValue[i])) {
           this.open3()
         } else {
-          // const money = this.inputValue[i]
-          // const arr = [id, money]
-          // remove(arr).then(() => {
-          //   this.$set(this.inputMoney, i, false)
-          //   this.getPartyList()
-          // })
-          this.dynamicTags[i] = this.inputValue[i]
-          this.$set(this.inputMoney, i, false)
-          this.$set(this.tagMoney, i, true)
+          const money = this.inputValue[i]
+          const arr = [id, money]
+          remove(arr).then(() => {
+            this.$set(this.inputMoney, i, false)
+            this.getPartyList()
+          })
+          // this.dynamicTags[i] = this.inputValue[i]
+          // this.$set(this.inputMoney, i, false)
+          // this.$set(this.tagMoney, i, true)
         }
       } else {
         this.open2()
@@ -179,36 +177,14 @@ export default {
       d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
       return d.toISOString()
     },
-    findElem(leader, list) {
-      const list1 = this.list1
-      const list2 = this.list2
-      const list3 = []
-      for (var i = 0; i < list.length; i++) {
-        const value = list1.indexOf(list[i])
-        if (value !== -1) {
-          list3.push(list2[i])
-        }
-      }
-      // const member = list.memberList
-      list.memberList = list3
-      // member.splice.call(member, 0, member.length, ...list3)
-    },
     getPartyList() {
       getParty().then((res, error) => {
         if (error) {
           console.log(error)
         } else {
         //   const data = res.data
-          // console.log(res)
-          const partydata = res.data.data[0].partydata
-          const doc = res.data.doc
-          console.log(doc, partydata)
-          const list1 = this.list1
-          const list2 = this.list2
-          for (var i = 0; i < doc.length; i++) {
-            list1.push(doc[i].username)
-            list2.push(doc[i].nickname)
-          }
+          console.log(res)
+          const partydata = res.data[0].partydata
           this.list = partydata.reverse()
           for (var j = 0; j < this.list.length; j++) {
             if (partydata[j].money) {

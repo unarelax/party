@@ -23,7 +23,7 @@
         <div class="block">
           <el-cascader
             v-model="anfriend"
-            placeholder="可直接搜索用户名"
+            placeholder="可直接搜索用户昵称"
             :options="optionsList"
             :props="{ multiple: true, expandTrigger: 'hover' }"
             filterable
@@ -121,7 +121,8 @@ export default {
       showable: false,
       loading: false,
       anfriend: [],
-      optionsList: []
+      optionsList: [],
+      list1: []
     }
   },
   created() {
@@ -138,7 +139,7 @@ export default {
     getUerList() {
       pgetList().then((res, error) => {
         if (error) {
-          console.log(error)
+          // console.log(error)
         } else {
           const userdata = res.data[0].friendList
           for (var i = 0; i < userdata.length; i++) {
@@ -151,9 +152,10 @@ export default {
             for (var j = 0; j < list.length; j++) {
               var cList = {}
               cList.label = list[j]
-              cList.value = user[j]
+              cList.value = [user[j], list[j]]
               options.children.push(cList)
             }
+            // console.log(options)
           }
         }
       })
@@ -161,10 +163,13 @@ export default {
     dealdata() {
       const flist = this.partyForm.friend
       const friend = this.anfriend
+      // console.log(friend)
       for (var i = 0; i < friend.length; i++) {
-        const data = this.partyForm.friend.indexOf(friend[i][1])
+        const data = this.list1.indexOf(friend[i][1][0])
         if (data === -1) {
-          flist.push(friend[i][1])
+          this.list1.push(friend[i][1][0])
+          flist.push(friend[i][1][1])
+          console.log(flist)
         }
       }
     },
@@ -191,6 +196,9 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.anfriend = []
+      this.list1 = []
+      this.friend = []
+      this.dynamicTags = []
     },
     handleClose(tag) {
       this.partyForm.dynamicTags.splice(this.partyForm.dynamicTags.indexOf(tag), 1)

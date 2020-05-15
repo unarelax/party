@@ -35,7 +35,7 @@
         </el-form-item>
 
         <el-form-item label="卡片颜色" prop="color">
-          <el-radio-group v-model="ruleForm.color[0]" :value="radio">
+          <el-radio-group v-model="ruleForm.color" :value="radio">
             <el-radio v-for="(item,index) of colorsList" :key="index" :label="item" @change="changeColor(index)">{{ item }}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -99,11 +99,15 @@ export default {
       }
     }
   },
+  created() {
+    this.getUsereList()
+  },
   methods: {
     // 删除成员
     delAva(i) {
       this.ruleForm.userList.splice(i, 1)
       this.ruleForm.avatarList.splice(i, 1)
+      this.ruleForm.nickList.splice(i, 1)
       // console.log(this.ruleForm.userList, this.ruleForm.nickList)
     },
     errorHandler() {
@@ -130,7 +134,6 @@ export default {
       })
     },
     handleFriend(friend) {
-      this.getUsereList()
       // console.log(friend)
       // console.log(this.allUser)
       const allUser = this.allUser
@@ -147,6 +150,7 @@ export default {
           userList.push(friend)
           avatarList.push(avatars[data])
           nickList.push(allNick[data])
+          console.log(nickList)
           this.friend = ''
         }
       } else {
@@ -159,13 +163,13 @@ export default {
           console.log(error)
         } else {
           const data = res.data
+          const allUser = this.allUser
+          const avatars = this.avatars
+          const allNick = this.allNick
           for (var i = 0; i < data.length; i++) {
             const user = data[i].username
             const avatar = data[i].avatar
             const nickname = data[i].nickname
-            const allUser = this.allUser
-            const avatars = this.avatars
-            const allNick = this.allNick
             allNick.push(nickname)
             avatars.push(avatar)
             allUser.push(user)
@@ -178,6 +182,7 @@ export default {
       this.fontcolor = 'white'
     },
     submitForm(ruleForm) {
+      console.log(this.ruleForm.nickList)
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           this.loading = true
@@ -199,6 +204,7 @@ export default {
       this.$refs[formName].resetFields()
       this.ruleForm.userList = []
       this.ruleForm.avatarList = []
+      this.ruleForm.nickList = []
       this.friend = ''
     }
   }
