@@ -262,7 +262,7 @@ $light_gray:#E9E9EB;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-image: url('../../assets/login_images/banner.jpg');
   overflow: hidden;
 
   .login-form {
